@@ -20,7 +20,7 @@ class Marca extends Model
     {
         return [
             'nome' => 'required|unique:marcas,nome,'.$this->id.'|min:3',
-            'imagem' => 'required',
+            'imagem' => 'required|file|mimes:png',
         ];
     }
 
@@ -29,7 +29,8 @@ class Marca extends Model
         return [
             'required' => 'O campo :attribute é orbigatório',
             'nome.unique' => 'O nome dessa marca já existe',
-            'nome.min' => 'O nome deve conter no minimo 3 caracteres'
+            'nome.min' => 'O nome deve conter no minimo 3 caracteres',
+            'imagem.mimes' => 'O nome deve ser do tipo png'
         ];
     }
 }
