@@ -13,4 +13,23 @@ class Marca extends Model
         'nome',
         'imagem'
     ];
+
+
+    //validações
+    public function rules()
+    {
+        return [
+            'nome' => 'required|unique:marcas|min:3',
+            'imagem' => 'required',
+        ];
+    }
+
+    public function feedback()
+    {
+        return [
+            'required' => 'O campo :attribute é orbigatório',
+            'nome.unique' => 'O nome dessa marca já existe',
+            'nome.min' => 'O nome deve conter no minimo 3 caracteres'
+        ];
+    }
 }
