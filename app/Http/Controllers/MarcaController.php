@@ -25,21 +25,21 @@ class MarcaController extends Controller
     public function store(Request $request)
     {
 
-        
 
-        
+
+
 
         $request->validate($this->marca->rules(), $this->marca->feedback());
 
         $marca = $this->marca->create($request->all());
-        
+
         return response()->json($marca, 201);
     }
 
 
     public function show($id)
     {
-        if(!$marca = $this->marca->find($id)){
+        if (!$marca = $this->marca->find($id)) {
             return response()->json(['msg' => 'Marca não encontrada'], 404);
         }
         return response()->json($marca, 200);
@@ -49,11 +49,28 @@ class MarcaController extends Controller
 
     public function update(Request $request, $id)
     {
-        if(!$marca = $this->marca->find($id)){
+        if (!$marca = $this->marca->find($id)) {
             return response()->json(['msg' => 'Marca não encontrada'], 404);
         }
 
-        $request->validate($marca->rules(), $marca->feedback());
+        if ($request->method() === 'PATCH') {
+
+            $regrasDinamicas = array();
+
+            //percorrendo todas as regras deinidas no Model
+            foreach($marca->rules() as $input => $regra){
+
+                //Coletar apenas as regras aplícaveis aos parâmetros parciais da requisição
+                if(array_key_exists($input, $request->all())){
+                    $regrasDinamicas[$input] = $regra;
+                }
+            }
+            $request->validate($regrasDinamicas, $marca->feedback());
+            
+        } else {
+            $request->validate($marca->rules(), $marca->feedback());
+        }
+
         $marca->update($request->all());
         return response()->json($marca, 200);
     }
@@ -61,12 +78,11 @@ class MarcaController extends Controller
 
     public function destroy($id)
     {
-        if(!$marca = $this->marca->find($id)){
+        if (!$marca = $this->marca->find($id)) {
             return response()->json(['msg' => 'Marca não encontrada'], 404);
         }
 
         $marca->delete();
         return response()->json(['msg' => 'Marca excluída com sucesso'], 200);
-        
     }
 }
