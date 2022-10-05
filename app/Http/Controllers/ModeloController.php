@@ -85,7 +85,7 @@ class ModeloController extends Controller
         $imagem_urn = $image->store('imagens/modelos', 'public');
         
 
-        $modelo = $this->modelo->update([
+        $modelo->update([
             'marca_id' => $request->marca_id,
             'nome' => $request->nome,
             'imagem' => $imagem_urn,
