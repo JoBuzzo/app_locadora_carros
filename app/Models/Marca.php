@@ -33,4 +33,7 @@ class Marca extends Model
             'imagem.mimes' => 'O nome deve ser do tipo png'
         ];
     }
+
+
+    
 }
