@@ -17,13 +17,23 @@ class ModeloController extends Controller
     {
         $modelos = array();
 
+        
+        if($request->has('atributos_marca')){
+
+            $atributos_marca = $request->atributos_marca;
+            $modelos = $this->modelo->with('marca:id,'.$atributos_marca);
+
+        }else{
+            $modelos = $this->modelo->with('marca');
+        }
+
         if($request->has('atributos')){
 
             $atributos = $request->atributos;
-            $modelos = $this->modelo->selectRaw($atributos)->with('marca')->get();
+            $modelos = $this->modelos->selectRaw($atributos)->get();
 
         }else{
-            return response()->json($this->modelo->with('marca')->get(), 200);
+            $modelos = $this->modelos->get();
         }
 
         return response()->json($modelos, 200);
